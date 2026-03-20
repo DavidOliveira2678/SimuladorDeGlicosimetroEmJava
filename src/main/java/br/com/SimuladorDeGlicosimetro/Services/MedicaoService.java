@@ -1,7 +1,118 @@
 package br.com.SimuladorDeGlicosimetro.Services;
 
+import br.com.SimuladorDeGlicosimetro.Entities.Medicao;
+
+import java.util.List;
+
+import br.com.SimuladorDeGlicosimetro.Data.MedicaoDAO;
+import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
+import br.com.SimuladorDeGlicosimetro.Exceptions.ServiceException;
+import br.com.SimuladorDeGlicosimetro.Utils.Estado;
+
 public class MedicaoService {
 	
-	public MedicaoService() { /* TODO: ADICIONAR NOVAS FUNÇÕES NO CONSTRUTOR CASO NECESSÁRIO */ }
+	private MedicaoDAO medicaoDAO;
+	
+	public MedicaoService(MedicaoDAO medicaoDAO) { 
+		this.medicaoDAO = medicaoDAO;
+	}
+	
+	private static int gerarMedicao() {
+		return (int) (Math.random() * 700) + 1;
+	}
+	
+	
+	public Medicao realizarMedicao() throws ServiceException {
+		
+		try {
+			
+			int medicao = gerarMedicao();
+			Estado estadoGlicemia = definirEstadoDaGlicemia(medicao);
+			
+			Medicao med = new Medicao(medicao, estadoGlicemia);
+			
+			medicaoDAO.cadastrarMedicao(med);
+			
+			return med;
+			
+		} catch (DatabaseException e) {
+			throw new ServiceException("Erro ao cadastrar medição", e);
+			
+		}
+		
+	}
+	
+	public List<Medicao> buscarTodasMedicoes() throws ServiceException {
+		
+		try {
+			
+			List<Medicao> meds = medicaoDAO.resgatarTodasMedicoes();
+			
+			return meds;
+			
+		} catch (DatabaseException e) {
+			throw new ServiceException("Erro ao buscar todas medições", e);
+			
+		}
+		
+	}
+	
+	public List<Medicao> buscarHipoglicemias() throws ServiceException {
+		
+		try {
+			
+			List<Medicao> hipos = medicaoDAO.resgatarHipoglicemias();
+			
+			return hipos;
+			
+		} catch (DatabaseException e) {
+			throw new ServiceException("Erro ao buscar todas medições", e);
+			
+		}
+		
+	}
+	
+	
+	public void apagarMedicoes() throws ServiceException {
+		
+		try {
+			
+			medicaoDAO.deletarMedicoes();
+			
+		} catch (DatabaseException e) {
+			throw new ServiceException("Erro ao deletar todas medições", e);
+			
+		}
+		
+	}
+	
+	
+	/**
+	 * Returna o estado da glicemia a partir do valor da medição.
+	 * @param medicao Um inteiro que representa o valor atual da glicemia.
+	 * @return O Estado da medição.
+	 */
+	private static Estado definirEstadoDaGlicemia(int medicao) {
+		
+		if(medicao <= 20) {
+			return Estado.LO;
+			
+		} else if (medicao < 70) {
+			return Estado.HIPOGLICEMIA;
+			
+		} else if (medicao <= 180) {
+			return Estado.OK;
+			
+		} else if (medicao <= 279) {
+			return Estado.HIPERGLICEMIA_SIGNIFICATIVA;
+			
+		} else if (medicao >= 280 && medicao < 650) {
+			return Estado.HIPERGLICEMIA_SEVERA;
+			
+		} else {
+			return Estado.HI;
+			
+		}
+	}
 	
 }

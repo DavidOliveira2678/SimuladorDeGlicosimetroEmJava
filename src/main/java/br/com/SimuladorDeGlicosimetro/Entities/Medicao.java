@@ -24,11 +24,11 @@ public class Medicao {
 	 * 
 	 * @param medicao valor da glicemia
 	 */
-	public Medicao(int medicao) {
+	public Medicao(int medicao, Estado estado) {
 		this.medicao = medicao;
 		this.dataMedicao = LocalDate.now();
 		this.horarioMedicao = LocalTime.now();
-		this.estado = Estado.definirEstadoDaGlicemia(medicao);
+		this.estado = estado;
 	}
 	
 	/**

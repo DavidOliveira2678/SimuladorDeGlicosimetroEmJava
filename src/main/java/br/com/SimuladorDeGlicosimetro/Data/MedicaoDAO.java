@@ -1,4 +1,4 @@
-package br.com.SimuladorDeGlicosimetroEmJava.Data;
+package br.com.SimuladorDeGlicosimetro.Data;
 
 import br.com.SimuladorDeGlicosimetro.Entities.Medicao;
 import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
@@ -17,10 +17,10 @@ public class MedicaoDAO {
 	 * @param med o objeto do tipo {@code Medicao}
 	 * @return <I>void</I>
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
-	 * @throws SQLException se ocorrer um erro especificamente no ato do acesso do banco de dados ou se o método for chamado em uma conexão fechada.
 	 */
 	public void cadastrarMedicao(Medicao med) throws DatabaseException {
-		String query = "INSERT INTO medicoes (glicemia, estado) VALUES (?, ?)";
+		
+		String query = "INSERT INTO medicoes (glicemia, estado, idGlicosimetro) VALUES (?, ?, 1)";
 		
 		try (PreparedStatement ps = ConectorBD.conectar().prepareStatement(query)){
 			
@@ -30,18 +30,15 @@ public class MedicaoDAO {
 			ps.execute();
 			
 		} catch(SQLException e) {
-			System.err.println("Erro ao cadastrar medição: " + e.getMessage());
-			e.getMessage();
+			throw new DatabaseException("Erro ao cadastrar medição" + e);
 		}
 		
 	}
-	
 	
 	/**
 	 * Realiza uma busca de todas medições registradas no banco de dados e as retorna em formato de {@code List}.
 	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
-	 * @throws SQLException se ocorrer um erro especificamente no ato do acesso do banco de dados ou se o método for chamado em uma conexão fechada.
 	 */
 	public List<Medicao> resgatarTodasMedicoes() throws DatabaseException {
 		
@@ -60,8 +57,7 @@ public class MedicaoDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("Erro ao resgatar as merdições: " + e.getMessage());
-			e.printStackTrace();
+			throw new DatabaseException("Erro ao cadastrar medição" + e);
 		}
 		
 		return medicoes;
@@ -73,7 +69,6 @@ public class MedicaoDAO {
 	 * registradas no banco de dados e as retorna em formato de {@code List}.
 	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
-	 * @throws SQLException se ocorrer um erro especificamente no ato do acesso do banco de dados ou se o método for chamado em uma conexão fechada.
 	 */
 	public List<Medicao> resgatarHiperglicemias() throws DatabaseException {
 		
@@ -92,8 +87,7 @@ public class MedicaoDAO {
 			}
 			
 		} catch (SQLException e) {
-			System.err.println("Erro ao resgatar as hiperglicemias: " + e.getMessage());
-			e.printStackTrace();
+			throw new DatabaseException("Erro ao cadastrar medição" + e);
 		}
 		
 		return medicoes;
@@ -104,7 +98,6 @@ public class MedicaoDAO {
 	 * registradas no banco de dados e as retorna em formato de {@code List}.
 	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
-	 * @throws SQLException se ocorrer um erro especificamente no ato do acesso do banco de dados ou se o método for chamado em uma conexão fechada.
 	 */
 	public List<Medicao> resgatarHipoglicemias() throws DatabaseException {
 		
@@ -123,8 +116,7 @@ public class MedicaoDAO {
 			}
 			
 		} catch (SQLException e) {
-			System.err.println("Erro ao resgatar as hipoglicemias: " + e.getMessage());
-			e.printStackTrace();
+			throw new DatabaseException("Erro ao cadastrar medição" + e);
 		}
 		
 		return medicoes;
@@ -134,7 +126,6 @@ public class MedicaoDAO {
 	 * Deleta todas as medições do banco de dados.
 	 * @return <I>void</I>
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
-	 * @throws SQLException se ocorrer um erro especificamente no ato do acesso do banco de dados ou se o método for chamado em uma conexão fechada.
 	 */
 	public void deletarMedicoes() throws DatabaseException {
 		
@@ -145,8 +136,7 @@ public class MedicaoDAO {
 			ps.execute();
 			
 		} catch (SQLException e) {
-			System.err.println("Erro ao apagar as medições: " + e.getMessage());
-			e.printStackTrace();
+			throw new DatabaseException("Erro ao cadastrar medição" + e);
 		}
 		
 	}

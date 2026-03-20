@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class ConectorBD {
@@ -15,7 +16,7 @@ public class ConectorBD {
 	private static final String urlBD = "jdbc:mysql://localhost:" + localHostBD + "/" + nomeBD;
 	private static Connection conector;
 	
-	public static Connection conectar() {
+	public static Connection conectar() throws DatabaseException {
 		try {
 			
 			if(conector == null) {
