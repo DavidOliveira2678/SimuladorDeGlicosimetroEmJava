@@ -20,7 +20,7 @@ public class MedicaoDAO {
 	 */
 	public void cadastrarMedicao(Medicao med) throws DatabaseException {
 		
-		String query = "INSERT INTO medicoes (glicemia, estado, idGlicosimetro) VALUES (?, ?, 1)";
+		String query = "INSERT INTO medicoes (glicemia, estado) VALUES (?, ?)";
 		
 		try (PreparedStatement ps = ConectorBD.conectar().prepareStatement(query)){
 			

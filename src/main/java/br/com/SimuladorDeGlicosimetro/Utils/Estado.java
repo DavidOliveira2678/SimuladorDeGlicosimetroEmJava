@@ -15,7 +15,7 @@ public enum Estado {
 	 * @return Um {@code Estado} a partir de uma {@code String}.
 	 */
 	public static Estado fromString(String str) {
-		return Estado.valueOf(str.replace(" ", "_"));
+		return Estado.valueOf(str.replace(" ", "_").toUpperCase());
 	}
 	
 	/**
