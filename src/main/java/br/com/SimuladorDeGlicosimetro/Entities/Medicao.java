@@ -72,10 +72,10 @@ public class Medicao {
 	public boolean equals(Object obj) {
 		
 		if (this == obj) return true;
-		if (Objects.nonNull(obj) || (!(this instanceof Medicao medicao))) return false;
+		if (Objects.isNull(obj) || (!(obj instanceof Medicao medicao))) return false;
 		
-		return this.id == medicao.id && this.medicao == medicao.medicao && this.dataMedicao == medicao.dataMedicao &&
-			   this.horarioMedicao == medicao.horarioMedicao && this.estado == medicao.estado;
+		return this.id == medicao.id && this.medicao == medicao.medicao && this.dataMedicao.equals(medicao.dataMedicao) &&
+			   this.horarioMedicao.equals(medicao.horarioMedicao) && this.estado == medicao.estado;
 	}
 
 	@Override

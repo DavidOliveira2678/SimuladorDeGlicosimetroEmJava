@@ -69,82 +69,82 @@ public class MedicaoView extends JFrame {
 		JButton btnGerarMedicao = new JButton("Gerar Medição");
 		btnGerarMedicao.setBorder(new LineBorder(new Color(92, 98, 131), 2, true));
 		btnGerarMedicao.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnGerarMedicao.setBounds(313, 337, 214, 48);
+		btnGerarMedicao.setBounds(582, 283, 214, 48);
 		contentPane.add(btnGerarMedicao);
 		
 		JLabel lblValorMedicao = new JLabel("0");
 		lblValorMedicao.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblValorMedicao.setBounds(211, 171, 108, 23);
+		lblValorMedicao.setBounds(480, 117, 108, 23);
 		contentPane.add(lblValorMedicao);
 		
 		JLabel lblValorData = new JLabel("0000-00-00");
 		lblValorData.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblValorData.setBounds(341, 171, 143, 23);
+		lblValorData.setBounds(610, 117, 143, 23);
 		contentPane.add(lblValorData);
 		
 		JLabel lblValorHora = new JLabel("00:00:0000");
 		lblValorHora.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblValorHora.setBounds(510, 171, 178, 23);
+		lblValorHora.setBounds(779, 117, 122, 23);
 		contentPane.add(lblValorHora);
 		
 		JLabel lblValorEstado = new JLabel("NULL");
 		lblValorEstado.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblValorEstado.setBounds(211, 258, 382, 23);
+		lblValorEstado.setBounds(480, 204, 382, 23);
 		contentPane.add(lblValorEstado);
 		
 		JLabel lblNewLabel = new JLabel("Glicemia");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel.setBounds(211, 146, 108, 23);
+		lblNewLabel.setBounds(480, 92, 108, 23);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblData_1 = new JLabel("Data (ANO-MÊS-DIA)");
 		lblData_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblData_1.setBounds(341, 146, 143, 23);
+		lblData_1.setBounds(610, 92, 143, 23);
 		contentPane.add(lblData_1);
 		
 		JLabel lblHorario = new JLabel("Horário");
 		lblHorario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblHorario.setBounds(510, 146, 108, 23);
+		lblHorario.setBounds(779, 92, 108, 23);
 		contentPane.add(lblHorario);
 		
 		JLabel lblEstadoDaGlicemia = new JLabel("Estado da Glicemia");
 		lblEstadoDaGlicemia.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblEstadoDaGlicemia.setBounds(211, 231, 180, 23);
+		lblEstadoDaGlicemia.setBounds(480, 177, 180, 23);
 		contentPane.add(lblEstadoDaGlicemia);
 		
 		JButton btnDeletarMedicoes = new JButton("Deletar Medições");
 		btnDeletarMedicoes.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnDeletarMedicoes.setBounds(313, 403, 214, 48);
+		btnDeletarMedicoes.setBounds(582, 349, 214, 48);
 		contentPane.add(btnDeletarMedicoes);
 		
 		JButton btnCarregarMedicoes = new JButton("Carregar Medições");
 		btnCarregarMedicoes.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnCarregarMedicoes.setBorder(new LineBorder(new Color(92, 98, 131), 2, true));
-		btnCarregarMedicoes.setBounds(313, 468, 214, 48);
+		btnCarregarMedicoes.setBounds(582, 414, 214, 48);
 		contentPane.add(btnCarregarMedicoes);
 		
 		JButton btnEsquerda = new JButton("<<");
 		btnEsquerda.setEnabled(false);
 		btnEsquerda.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnEsquerda.setBorder(new LineBorder(new Color(92, 98, 131), 2, true));
-		btnEsquerda.setBounds(237, 468, 66, 48);
+		btnEsquerda.setBounds(506, 414, 66, 48);
 		contentPane.add(btnEsquerda);
 		
 		JButton btnDireita = new JButton(">>");
 		btnDireita.setEnabled(false);
 		btnDireita.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnDireita.setBorder(new LineBorder(new Color(92, 98, 131), 2, true));
-		btnDireita.setBounds(537, 468, 66, 48);
+		btnDireita.setBounds(806, 414, 66, 48);
 		contentPane.add(btnDireita);
 		
 		JLabel lblValorIndice = new JLabel("0");
 		lblValorIndice.setFont(new Font("Tahoma", Font.PLAIN, 28));
-		lblValorIndice.setBounds(35, 63, 108, 23);
+		lblValorIndice.setBounds(806, 35, 108, 23);
 		contentPane.add(lblValorIndice);
 		
 		JLabel lblIndice = new JLabel("Índice");
 		lblIndice.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblIndice.setBounds(35, 39, 108, 23);
+		lblIndice.setBounds(806, 11, 108, 23);
 		contentPane.add(lblIndice);
 		
 		btnGerarMedicao.addActionListener(new ActionListener() {
@@ -190,6 +190,7 @@ public class MedicaoView extends JFrame {
 					btnEsquerda.setEnabled(true);
 						
 				} catch (ControllerException ex) {
+					JOptionPane.showMessageDialog(null, "Erro interno no sistema.", "Erro", JOptionPane.WARNING_MESSAGE);
 					ex.printStackTrace();
 				}	
 			}
@@ -204,6 +205,7 @@ public class MedicaoView extends JFrame {
 				try {
 					
 					indiceMedicao ++;
+					
 					medAtual = medicoes.get(indiceMedicao);
 					
 					lblValorIndice.setText(String.valueOf(indiceMedicao));
@@ -216,7 +218,6 @@ public class MedicaoView extends JFrame {
 					
 					lblValorIndice.setText(String.valueOf(indiceMedicao));
 					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
-					
 				}
 				
 			}
@@ -231,13 +232,15 @@ public class MedicaoView extends JFrame {
 				try {
 					
 					indiceMedicao --;
+					
 					medAtual = medicoes.get(indiceMedicao);
 					
 					lblValorIndice.setText(String.valueOf(indiceMedicao));
 					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
 					
-				} catch (IndexOutOfBoundsException ex) {
 					
+				} catch (IndexOutOfBoundsException ex) {
+
 					medAtual = medicoes.getLast();
 					indiceMedicao = medAtual.getId() - 1;
 					
