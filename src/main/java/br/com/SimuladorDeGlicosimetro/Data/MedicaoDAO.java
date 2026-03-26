@@ -4,6 +4,9 @@ import br.com.SimuladorDeGlicosimetro.Entities.Medicao;
 import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import br.com.SimuladorDeGlicosimetro.Utils.ConectorBD;
 import br.com.SimuladorDeGlicosimetro.Utils.Estado;
+import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
+import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,10 +43,10 @@ public class MedicaoDAO {
 	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
 	 */
-	public List<Medicao> resgatarTodasMedicoes() throws DatabaseException {
+	public CircularList<Medicao> resgatarTodasMedicoes() throws DatabaseException {
 		
 		String query = "SELECT id, glicemia, estado, dataMedicao, horarioMedicao FROM medicoes;";
-		List<Medicao> medicoes = new ArrayList<Medicao>();
+		CircularList<Medicao> medicoes = new CircularLinkedList<Medicao>();
 		
 		try(PreparedStatement ps = ConectorBD.conectar().prepareStatement(query)){
 			

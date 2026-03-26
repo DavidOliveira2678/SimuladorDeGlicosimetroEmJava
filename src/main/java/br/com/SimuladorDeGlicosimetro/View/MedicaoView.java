@@ -14,6 +14,7 @@ import br.com.SimuladorDeGlicosimetro.Exceptions.ControllerException;
 import br.com.SimuladorDeGlicosimetro.Services.MedicaoService;
 import br.com.SimuladorDeGlicosimetro.Utils.Constantes;
 import br.com.SimuladorDeGlicosimetro.Utils.Estado;
+import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -22,7 +23,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,8 +34,7 @@ public class MedicaoView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static List<Medicao> medicoes;
-	private static int indiceMedicao;
+	private static CircularList<Medicao> medicoes;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -142,7 +141,7 @@ public class MedicaoView extends JFrame {
 		lblValorIndice.setBounds(806, 35, 108, 23);
 		contentPane.add(lblValorIndice);
 		
-		JLabel lblIndice = new JLabel("Índice");
+		JLabel lblIndice = new JLabel("ID Glicemia");
 		lblIndice.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblIndice.setBounds(806, 11, 108, 23);
 		contentPane.add(lblIndice);
@@ -180,17 +179,16 @@ public class MedicaoView extends JFrame {
 					MedicaoController medCont = new MedicaoController(medSer);
 					
 					medicoes = medCont.buscarMedicoes();
-					Medicao medAtual = medicoes.getFirst();
-					indiceMedicao = 0;
+					Medicao medAtual = medicoes.get(0);
 					
 					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
-					lblValorIndice.setText(String.valueOf(indiceMedicao));
+					lblValorIndice.setText(String.valueOf(medAtual.getId()));
 					
 					btnDireita.setEnabled(true);
 					btnEsquerda.setEnabled(true);
 						
-				} catch (ControllerException ex) {
-					JOptionPane.showMessageDialog(null, "Erro interno no sistema.", "Erro", JOptionPane.WARNING_MESSAGE);
+				}catch (ControllerException ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
 					ex.printStackTrace();
 				}	
 			}
@@ -204,20 +202,13 @@ public class MedicaoView extends JFrame {
 				
 				try {
 					
-					indiceMedicao ++;
+					medAtual = medicoes.next();
 					
-					medAtual = medicoes.get(indiceMedicao);
-					
-					lblValorIndice.setText(String.valueOf(indiceMedicao));
+					lblValorIndice.setText(String.valueOf(medAtual.getId()));
 					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
 					
-				} catch (IndexOutOfBoundsException ex) {
-					
-					medAtual = medicoes.getFirst();
-					indiceMedicao = medAtual.getId() - 1;
-					
-					lblValorIndice.setText(String.valueOf(indiceMedicao));
-					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
+				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 				
 			}
@@ -231,22 +222,14 @@ public class MedicaoView extends JFrame {
 				
 				try {
 					
-					indiceMedicao --;
+					medAtual = medicoes.previous();
 					
-					medAtual = medicoes.get(indiceMedicao);
-					
-					lblValorIndice.setText(String.valueOf(indiceMedicao));
+					lblValorIndice.setText(String.valueOf(medAtual.getId()));
 					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
 					
 					
 				} catch (IndexOutOfBoundsException ex) {
-
-					medAtual = medicoes.getLast();
-					indiceMedicao = medAtual.getId() - 1;
-					
-					lblValorIndice.setText(String.valueOf(indiceMedicao));
-					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
-					
+					ex.printStackTrace();
 				}
 				
 			}
@@ -265,8 +248,8 @@ public class MedicaoView extends JFrame {
 					
 					medCont.apagarMedicoes();
 				
+
 					medicoes.clear();
-					indiceMedicao = 0;
 					
 					btnDireita.setEnabled(false);
 					btnEsquerda.setEnabled(false);
