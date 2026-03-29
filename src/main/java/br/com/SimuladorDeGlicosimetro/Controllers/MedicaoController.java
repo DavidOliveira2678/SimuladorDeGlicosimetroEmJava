@@ -1,6 +1,7 @@
 package br.com.SimuladorDeGlicosimetro.Controllers;
 
 import br.com.SimuladorDeGlicosimetro.Services.MedicaoService;
+import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 import br.com.SimuladorDeGlicosimetro.Exceptions.ControllerException;
 import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
@@ -34,16 +35,16 @@ public class MedicaoController {
 	}
 	
 	/**
-	 * Busca por <B>todas</B> as medições no banco de dados e as retorna em formato de lista ({@code List<Medicao>})
+	 * Busca por <B>todas</B> as medições no banco de dados e as retorna em formato de lista circular duplamente encadeada ({@code CircularLinkedList<Medicao>})
 	 * 
-	 * @return Uma lista ({@code List<Medicao>}) das medições presentes no banco de dados.
+	 * @return Uma lista circular duplamente encadeada({@code CircularLinkedList<Medicao>}) das medições presentes no banco de dados.
 	 * @throws ControllerException caso haja algum erro no momento de busca das medições.
 	 */
-	public CircularList<Medicao> buscarMedicoes() throws ControllerException {
+	public CircularLinkedList<Medicao> buscarMedicoes() throws ControllerException {
 		
 		try {
 			
-			CircularList<Medicao> meds = medService.buscarTodasMedicoes();
+			CircularLinkedList<Medicao> meds = medService.buscarTodasMedicoes();
 			
 			if(meds.isEmpty()) throw new ControllerException("Não há medições para vizualizar.");
 			

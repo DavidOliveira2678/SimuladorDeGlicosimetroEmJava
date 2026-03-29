@@ -8,6 +8,7 @@ import br.com.SimuladorDeGlicosimetro.Data.MedicaoDAO;
 import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import br.com.SimuladorDeGlicosimetro.Exceptions.ServiceException;
 import br.com.SimuladorDeGlicosimetro.Utils.Estado;
+import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 
 public class MedicaoService {
@@ -43,11 +44,11 @@ public class MedicaoService {
 		
 	}
 	
-	public CircularList<Medicao> buscarTodasMedicoes() throws ServiceException {
+	public CircularLinkedList<Medicao> buscarTodasMedicoes() throws ServiceException {
 		
 		try {
 			
-			CircularList<Medicao> meds = medicaoDAO.resgatarTodasMedicoes();
+			CircularLinkedList<Medicao> meds = medicaoDAO.resgatarTodasMedicoes();
 			
 			return meds;
 			

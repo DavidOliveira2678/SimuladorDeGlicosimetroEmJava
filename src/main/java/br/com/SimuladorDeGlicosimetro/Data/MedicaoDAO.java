@@ -40,13 +40,13 @@ public class MedicaoDAO {
 	
 	/**
 	 * Realiza uma busca de todas medições registradas no banco de dados e as retorna em formato de {@code List}.
-	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
+	 * @return Retorna uma lista ({@code CircularLinkedList}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
 	 */
-	public CircularList<Medicao> resgatarTodasMedicoes() throws DatabaseException {
+	public CircularLinkedList<Medicao> resgatarTodasMedicoes() throws DatabaseException {
 		
 		String query = "SELECT id, glicemia, estado, dataMedicao, horarioMedicao FROM medicoes;";
-		CircularList<Medicao> medicoes = new CircularLinkedList<Medicao>();
+		CircularLinkedList<Medicao> medicoes = new CircularLinkedList<Medicao>();
 		
 		try(PreparedStatement ps = ConectorBD.conectar().prepareStatement(query)){
 			
