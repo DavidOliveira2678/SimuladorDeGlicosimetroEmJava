@@ -324,8 +324,8 @@ public class MedicaoView extends JFrame {
 	public void exibirNaTela(JLabel glicemia, JLabel data, JLabel hora, JLabel estado, Medicao med) {
 		
 		glicemia.setText(String.valueOf(med.getMedicao()));
-		data.setText(String.valueOf(med.getDataMedicao()));
-		hora.setText(String.valueOf(med.getHorarioMedicao()));
+		data.setText(String.valueOf(med.getDataMedicao().format(Constantes.FORMATTER_DATA)));
+		hora.setText(String.valueOf(med.getHorarioMedicao().format(Constantes.FORMATTER_HORARIO)));
 		estado.setText(Estado.estadoToString(med.getEstado()));
 		
 		glicemia.setVisible(true);

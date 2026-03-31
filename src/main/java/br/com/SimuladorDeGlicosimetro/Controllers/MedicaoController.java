@@ -56,11 +56,11 @@ public class MedicaoController {
 		
 	}
 	
-	public List<Medicao> buscarHipoglicemia() throws ControllerException {
+	public CircularLinkedList<Medicao> buscarHipoglicemias() throws ControllerException {
 		
 		try {
 			
-			List<Medicao> meds = medService.buscarHipoglicemias();
+			CircularLinkedList<Medicao> meds = medService.buscarHipoglicemias();
 			
 			if(meds.isEmpty()) throw new ControllerException("Não há hipoglicemias registradas.");
 			
@@ -69,6 +69,22 @@ public class MedicaoController {
 		} catch (ServiceException e) {
 			throw new ControllerException("Erro ao buscar hipoglicemias", e);
 			
+		}
+		
+	}
+	
+	public CircularLinkedList<Medicao> buscarHiperglicemias() throws ControllerException {
+		
+		try {
+			
+			CircularLinkedList<Medicao> meds = medService.buscarHiperglicemias();
+			
+			if(meds.isEmpty()) throw new ControllerException("Não há hiperglicemias registradas.");
+			
+			return meds;
+			
+		} catch (ServiceException e) {
+			throw new ControllerException("Erro ao buscar hiperglicemias", e);
 		}
 		
 	}

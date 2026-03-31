@@ -59,19 +59,33 @@ public class MedicaoService {
 		
 	}
 	
-	public List<Medicao> buscarHipoglicemias() throws ServiceException {
+	public CircularLinkedList<Medicao> buscarHipoglicemias() throws ServiceException {
 		
 		try {
 			
-			List<Medicao> hipos = medicaoDAO.resgatarHipoglicemias();
+			CircularLinkedList<Medicao> hipos = medicaoDAO.resgatarHipoglicemias();
 			
 			return hipos;
 			
 		} catch (DatabaseException e) {
-			throw new ServiceException("Erro ao buscar todas medições", e);
+			throw new ServiceException("Erro ao buscar hipoglicemias", e);
 			
 		}
 		
+	}
+	
+	public CircularLinkedList<Medicao> buscarHiperglicemias() throws ServiceException {
+		
+		try {
+			
+			CircularLinkedList<Medicao> hipers = medicaoDAO.resgatarHiperglicemias();
+			
+			return hipers;
+			
+		} catch (DatabaseException e) {
+			throw new ServiceException("Erro ao buscar hiperglicemias");
+			
+		}
 	}
 	
 	

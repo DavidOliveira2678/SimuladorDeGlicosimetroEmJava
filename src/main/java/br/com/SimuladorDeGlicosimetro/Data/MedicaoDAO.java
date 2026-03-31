@@ -73,10 +73,10 @@ public class MedicaoDAO {
 	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
 	 */
-	public List<Medicao> resgatarHiperglicemias() throws DatabaseException {
+	public CircularLinkedList<Medicao> resgatarHiperglicemias() throws DatabaseException {
 		
 		String query = "SELECT id, glicemia, estado, dataMedicao, horarioMedicao FROM medicoes WHERE glicemia > 180;";
-		List<Medicao> medicoes = new ArrayList<Medicao>();
+		CircularLinkedList<Medicao> medicoes = new CircularLinkedList<Medicao>();
 		
 		try (PreparedStatement ps = ConectorBD.conectar().prepareStatement(query)) {
 			
@@ -102,10 +102,10 @@ public class MedicaoDAO {
 	 * @return Retorna uma lista ({@code List}) de {@code Medicao}
 	 * @throws DatabaseException se ocorrer algum erro interno no banco de dados.
 	 */
-	public List<Medicao> resgatarHipoglicemias() throws DatabaseException {
+	public CircularLinkedList<Medicao> resgatarHipoglicemias() throws DatabaseException {
 		
 		String query = "SELECT id, glicemia, estado, dataMedicao, horarioMedicao FROM medicoes WHERE glicemia < 70;";
-		List<Medicao> medicoes = new ArrayList<Medicao>();
+		CircularLinkedList<Medicao> medicoes = new CircularLinkedList<Medicao>();
 		
 		try (PreparedStatement ps = ConectorBD.conectar().prepareStatement(query)) {
 			
