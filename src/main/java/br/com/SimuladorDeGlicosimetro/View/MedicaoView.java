@@ -3,10 +3,29 @@ package br.com.SimuladorDeGlicosimetro.View;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.net.URL;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import java.util.Objects;
+import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.border.LineBorder;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
 
 import br.com.SimuladorDeGlicosimetro.Controllers.MedicaoController;
 import br.com.SimuladorDeGlicosimetro.Data.MedicaoDAO;
@@ -18,27 +37,7 @@ import br.com.SimuladorDeGlicosimetro.Utils.Estado;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.Objects;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.awt.Insets;
-
-import javax.swing.border.LineBorder;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-
 public class MedicaoView extends JFrame {
-
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static CircularList<Medicao> medicoes;
@@ -62,8 +61,12 @@ public class MedicaoView extends JFrame {
 
 	public MedicaoView() {
 		
+		URL urlImagem = MedicaoView.class.getClassLoader().getResource("Static/GlucaJavaIcon.png");
+		
 		medicoes = new CircularLinkedList<Medicao>();
 		
+		setTitle("GlucaJava - Gerar Medição");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(urlImagem));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(Constantes.FECHAR_TELA_CONFIRM);
 		setResizable(false);
@@ -79,8 +82,8 @@ public class MedicaoView extends JFrame {
 		
 		JButton btnGerarMedicao = new JButton("Gerar Medição");
 		btnGerarMedicao.setBorder(new LineBorder(new Color(92, 98, 131), 2, true));
-		btnGerarMedicao.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnGerarMedicao.setBounds(584, 211, 214, 48);
+		btnGerarMedicao.setFont(new Font("Century Gothic", Font.PLAIN, 22));
+		btnGerarMedicao.setBounds(584, 148, 233, 48);
 		contentPane.add(btnGerarMedicao);
 		
 		
@@ -115,9 +118,16 @@ public class MedicaoView extends JFrame {
 		
 		
 		JButton btnDeletarMedicoes = new JButton("Deletar Medições");
-		btnDeletarMedicoes.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnDeletarMedicoes.setBounds(584, 297, 214, 48);
+		btnDeletarMedicoes.setFont(new Font("Century Gothic", Font.PLAIN, 22));
+		btnDeletarMedicoes.setBounds(584, 234, 233, 48);
 		contentPane.add(btnDeletarMedicoes);
+		
+		
+    	JButton btnPDFView = new JButton("Geração de PDF");
+    	btnPDFView.setFont(new Font("Century Gothic", Font.PLAIN, 22));
+    	btnPDFView.setBorder(new LineBorder(new Color(92, 98, 131), 2, true));
+    	btnPDFView.setBounds(584, 356, 233, 48);
+    	contentPane.add(btnPDFView);
 		
 		
 		JButton btnCarregarMedicoes = new JButton();
@@ -181,142 +191,168 @@ public class MedicaoView extends JFrame {
 		
 		
 		
-		btnGerarMedicao.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					
-					MedicaoDAO medDAO = new MedicaoDAO();
-					MedicaoService medSer = new MedicaoService(medDAO);
-					MedicaoController medCont = new MedicaoController(medSer);
-					
-					Medicao med = medCont.realizarMedicao();
-					
-					btnDireita.setEnabled(false);
-					btnEsquerda.setEnabled(false);
-					btnDireita.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					btnEsquerda.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					
-					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, med);
-					
-				} catch (ControllerException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
-				}
-			}
+		btnPDFView.addActionListener(e -> {
+			
+			this.setVisible(false);
+			GerarPDFView pdf = new GerarPDFView();
+			this.dispose();
+			pdf.setVisible(true);
+			
 		});
 		
-		
-		
-		btnCarregarMedicoes.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					
-					MedicaoDAO medDAO = new MedicaoDAO();
-					MedicaoService medSer = new MedicaoService(medDAO);
-					MedicaoController medCont = new MedicaoController(medSer);
-					
-					medicoes = medCont.buscarMedicoes();
-					
-					Medicao medAtual = medicoes.get(0);
-					
-					exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
-					lblValorIndice.setText(String.valueOf(medAtual.getId()));
-					
-					btnDireita.setEnabled(true);
-					btnEsquerda.setEnabled(true);
-					btnDireita.setCursor(new Cursor(Cursor.HAND_CURSOR));
-					btnEsquerda.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						
-				}catch (ControllerException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
-				}	
-			}
-		});
-		
-		
-		
-		btnDireita.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		btnGerarMedicao.addActionListener(e -> {
+			
+			try {
 				
-				Medicao medAtual = medicoes.next();
-					
-				lblValorIndice.setText(String.valueOf(medAtual.getId()));
-				exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
-				
-			}
-		});
-		
-		
-		
-		btnEsquerda.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				Medicao medAtual = medicoes.previous();
-					
-				lblValorIndice.setText(String.valueOf(medAtual.getId()));
-				exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
-				
-			}
-		});
-		
-		
-		
-		btnDeletarMedicoes.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				if(deletarMedicoes()) {
-					
-					medicoes.clear();
-					
-					lblValorMedicao.setVisible(false);
-					lblValorData.setVisible(false);
-					lblValorHora.setVisible(false);
-					lblValorEstado.setVisible(false);
-					
-					btnDireita.setEnabled(false);
-					btnEsquerda.setEnabled(false);
-					btnDireita.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					btnEsquerda.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					
-				}
-			}
-		});
-	}
-	
-	
-	
-	public boolean deletarMedicoes() {
-		
-	    int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja deletar todas as medições?", "Confirmação", JOptionPane.YES_NO_OPTION);
-	    
-	    if (confirmacao == JOptionPane.NO_OPTION) {
-	    	
-	    	return false;
-	    	
-	    } else {
-	    	
-	    	try {
-	    		
 				MedicaoDAO medDAO = new MedicaoDAO();
 				MedicaoService medSer = new MedicaoService(medDAO);
 				MedicaoController medCont = new MedicaoController(medSer);
 				
-				medCont.apagarMedicoes();
+				Medicao med = medCont.realizarMedicao();
 				
-				JOptionPane.showMessageDialog(null, "Medições apagadas.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				btnDireita.setEnabled(false);
+				btnEsquerda.setEnabled(false);
+				btnDireita.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				btnEsquerda.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				
-				return true;
+				exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, med);
 				
-	    	} catch (ControllerException ex) {
-	    		JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
-	    		return false;
-	    	}
-	    	
-	    }
+			} catch (ControllerException ex) {
+				JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
+			}
+			
+		});
+		
+		
+		
+		btnCarregarMedicoes.addActionListener(e -> {
+			
+			try {
+				
+				MedicaoDAO medDAO = new MedicaoDAO();
+				MedicaoService medSer = new MedicaoService(medDAO);
+				MedicaoController medCont = new MedicaoController(medSer);
+				
+				medicoes = medCont.buscarMedicoes();
+				
+				Medicao medAtual = medicoes.get(0);
+				
+				exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
+				lblValorIndice.setText(String.valueOf(medAtual.getId()));
+				
+				btnDireita.setEnabled(true);
+				btnEsquerda.setEnabled(true);
+				btnDireita.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				btnEsquerda.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					
+			}catch (ControllerException ex) {
+				JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
+			}
+			
+		});
+		
+		
+		
+		btnDireita.addActionListener(e -> {
+				
+			Medicao medAtual = medicoes.next();
+				
+			lblValorIndice.setText(String.valueOf(medAtual.getId()));
+			exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
+				
+		});
+		
+		
+		
+		btnEsquerda.addActionListener(e -> {
+				
+			Medicao medAtual = medicoes.previous();
+				
+			lblValorIndice.setText(String.valueOf(medAtual.getId()));
+			exibirNaTela(lblValorMedicao, lblValorData, lblValorHora, lblValorEstado, medAtual);
+				
+		});
+		
+		
+		
+		btnDeletarMedicoes.addActionListener(e -> {
+			
+			int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja deletar todas as medições?", "Confirmação", JOptionPane.YES_NO_OPTION);
+		    
+		    if (confirmacao == JOptionPane.YES_OPTION) {
+		    	
+		    	btnGerarMedicao.setEnabled(false);
+		    	btnDeletarMedicoes.setEnabled(false);
+		    	btnPDFView.setEnabled(false);
+		    	btnCarregarMedicoes.setEnabled(false);
+		    	btnCarregarMedicoes.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		    	
+				MedicaoDAO medDAO = new MedicaoDAO();
+				MedicaoService medSer = new MedicaoService(medDAO);
+				MedicaoController medCont = new MedicaoController(medSer);
+				
+				JOptionPane opPane = new JOptionPane(
+						"Apagando medições.\nEssa ação pode durar um momento.",
+						JOptionPane.INFORMATION_MESSAGE,
+						JOptionPane.DEFAULT_OPTION,
+						null,
+						new Object[]{},
+						null);
+				
+				JDialog jDialog = opPane.createDialog(this, "Aguarde");
+				jDialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+				jDialog.setModal(false);
+				jDialog.setVisible(true);
+				
+				SwingWorker<Void, Void> worker = new SwingWorker<>() {
+					
+					@Override
+					protected Void doInBackground() {
+						
+						try {
+							
+							medCont.apagarMedicoes();
+							medicoes.clear();
+							
+						} catch (Exception e) {
+							
+							JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.WARNING_MESSAGE);
+						}
+						return null;
+						
+					}
+					
+					@Override
+					protected void done() {
+						
+						jDialog.dispose();
+						
+						lblValorMedicao.setVisible(false);
+						lblValorData.setVisible(false);
+						lblValorHora.setVisible(false);
+						lblValorEstado.setVisible(false);
+						
+						btnDireita.setEnabled(false);
+						btnEsquerda.setEnabled(false);
+						btnDireita.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+						btnEsquerda.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));	
+						
+				    	btnDeletarMedicoes.setEnabled(true);
+				    	btnGerarMedicao.setEnabled(true);
+				    	btnPDFView.setEnabled(true);
+				    	btnCarregarMedicoes.setEnabled(true);
+				    	btnCarregarMedicoes.setCursor(new Cursor(Cursor.HAND_CURSOR));
+						
+						JOptionPane.showMessageDialog(null, "Medições apagadas.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+						
+					}
+					
+				};
+				
+				worker.execute();
+				
+		    }
+		});
 	}
 	
 	

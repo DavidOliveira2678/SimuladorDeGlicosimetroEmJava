@@ -1,11 +1,15 @@
 package br.com.SimuladorDeGlicosimetro.Utils;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
+
 import java.util.Calendar;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
@@ -14,6 +18,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import br.com.SimuladorDeGlicosimetro.Controllers.MedicaoController;
@@ -22,28 +27,10 @@ import br.com.SimuladorDeGlicosimetro.Entities.Medicao;
 import br.com.SimuladorDeGlicosimetro.Services.MedicaoService;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class GeradorPDF {
 	
-	private static final Dotenv ENV = Dotenv.load();
-	private static final String CAMINHO_IMAGEM = ENV.get("CAMINHO_IMAGEM");
-	
-	//TODO: REMOVER O MÉTOODO MAIN (GERADO APENAS PARA TESTE)
-	public static void main(String[] args) {
-		
-		try {
-			
-			gerarPDF(false, true);
-			
-		}catch(IOException e) {
-			e.printStackTrace();
-			
-		}
-		
-	}
-	
-	public static void gerarPDF(boolean hipo, boolean hiper) throws IOException {
+	public static String gerarPDF(boolean hipo, boolean hiper) throws IOException {
 		
 		Logger.getLogger("org.apache.pdfbox").setLevel(Level.SEVERE);
 		
@@ -64,14 +51,17 @@ public class GeradorPDF {
 			float margemDireita = 50;
 			
 			float inicioX = margemEsquerda;
-			float inicioYPrimeiraPagina = containerPagina.getHeight() - margemSuperior - 100;
+			float inicioYPrimeiraPagina = containerPagina.getHeight() - margemSuperior - 80;
 			float inicioYOutrasPaginas = containerPagina.getHeight() - margemSuperior;
 			
 			Cursor cursor = new Cursor(inicioX, inicioYPrimeiraPagina);
 			float leading = 15;
 			
 			
-			gerarCabecalho(doc, page, contStream);
+			gerarCabecalho(doc, page, contStream, cursor, leading);
+			
+			cursor.x = inicioX;
+			cursor.y = inicioYPrimeiraPagina;
 			
 			contStream.beginText();
 			
@@ -79,10 +69,16 @@ public class GeradorPDF {
 			contStream.setLeading(leading);
 			contStream.newLineAtOffset(cursor.x, cursor.y);
 			
-			
 			CircularList<Medicao> medicoes = buscarTodasAsMedicoes();
 			
+			contStream.setFont(font, 18);
+			contStream.showText("Glicemias");
+			pularDuasLinhas(contStream, cursor, leading);			
+			
+			contStream.setFont(font, 12);
+			
 			if(medicoes != null && !medicoes.isEmpty()) {
+				
 				
 				for(Medicao med : medicoes) {
 					
@@ -132,15 +128,16 @@ public class GeradorPDF {
 			docInfo.setAuthor("GlucaJava");
 			docInfo.setCreationDate(Calendar.getInstance());
 			
-			doc.save("pdfBoxHelloWorld.pdf");
+			String caminho = System.getProperty("user.home") + "/Documents/MedicoesGlucaJava.pdf";
+			doc.save(caminho);
+			
 			doc.close();
 			
-			//TODO: REMOVER ESSA LINHA
-			System.out.println("[DEBUG]: Documento salvo com sucesso!");
-			
+			return caminho;
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			
+			throw new IOException("Erro ao gerar PDF: " + e);
 		}
 		
 	}
@@ -181,20 +178,39 @@ public class GeradorPDF {
 	    return contStream;
 	}
 	
-	private static void gerarCabecalho(PDDocument doc, PDPage page, PDPageContentStream contStream) throws IOException {
+	private static void gerarCabecalho(PDDocument doc, PDPage page, PDPageContentStream contStream, Cursor cursor, float leading) throws IOException {
 		
 		PDType1Font font = new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN);
-		PDImageXObject glucaJavaLogo = PDImageXObject.createFromFile(CAMINHO_IMAGEM + "\\SimuladorDeGlicosimetroEmJava\\src\\main\\resources\\Static\\GlucaJavaLogo.png", doc);
 		float topo = page.getMediaBox().getHeight();
+		float yCabecalho = topo - 60;
 		
-		contStream.drawImage(glucaJavaLogo, 50, topo - 100, 83, 80);
-		
+		try(InputStream inpStream = GeradorPDF.class.getClassLoader().getResourceAsStream("Static/GlucaJavaLogo.png")){
+			
+			
+		    if (inpStream == null) throw new IOException("Imagem não encontrada: Static/GlucaJavaLogo.png");
+
+		    BufferedImage bufferedImage = ImageIO.read(inpStream);
+		    PDImageXObject glucaJavaLogo = LosslessFactory.createFromImage(doc, bufferedImage);
+		    
+			contStream.drawImage(glucaJavaLogo, 50, topo - 100, 83, 80);
+			
+		}
 		
 		contStream.beginText();
 		
 		contStream.setFont(font, 22);
-		contStream.newLineAtOffset(140, topo - 60);
-		contStream.showText("GlucaJava - Glicemias " + LocalDate.now().format(Constantes.FORMATTER_DATA));
+		contStream.setLeading(leading);
+		contStream.newLineAtOffset(140, yCabecalho);
+		
+		contStream.showText("GlucaJava - Glicemias registradas");
+		
+		cursor.x = 140;
+		cursor.y = yCabecalho;
+		
+		pularLinha(contStream, cursor, leading - 15);
+		
+		contStream.setFont(font, 18);
+		contStream.showText("Gerado em: " + LocalDate.now().format(Constantes.FORMATTER_DATA));
 		
 		contStream.endText();
 		
@@ -211,8 +227,8 @@ public class GeradorPDF {
 		
 	}
 	
-	private static void pularLinha(PDPageContentStream cs, Cursor cursor, float leading) throws IOException {
-	    cs.newLine();
+	private static void pularLinha(PDPageContentStream contStream, Cursor cursor, float leading) throws IOException {
+	    contStream.newLine();
 	    cursor.y -= leading;
 	}
 	
