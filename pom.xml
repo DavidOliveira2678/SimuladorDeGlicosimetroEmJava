@@ -6,6 +6,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
   <groupId>br.com.simuladodeglicosimetro</groupId>
   <artifactId>SimuladorDeGlicosimetroEmJava</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
+	<build>
+	  <resources>
+	    <resource>
+	      <directory>src/main/resources</directory>
+	    </resource>
+	  </resources>
+	</build>
   
   <properties>
   	<maven.compiler.source>21</maven.compiler.source>

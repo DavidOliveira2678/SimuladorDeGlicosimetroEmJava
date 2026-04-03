@@ -20,7 +20,38 @@ public class MedicaoService {
 	}
 	
 	private static int gerarMedicao() {
-		return (int) (Math.random() * 700) + 1;
+		
+		int min;
+		int max;
+		int resultado;
+		
+		double decisao = Math.random();
+		
+		if(decisao < 0.2) {
+			
+			min = 650;
+			max = 700;
+			
+			resultado = min + (int) (Math.random() * (max - min));
+		
+		} else if (decisao < 0.3){
+			
+			min = 280;
+			max = 650;
+			
+			resultado = min + (int) (Math.random() * (max - min));
+			
+		} else {
+			
+			min = 1;
+			max = 250;
+			
+			resultado = min + (int) (Math.random() * (max - min));
+			
+		}
+		
+		
+		return resultado;
 	}
 	
 	
@@ -116,7 +147,7 @@ public class MedicaoService {
 		} else if (medicao < 70) {
 			return Estado.HIPOGLICEMIA;
 			
-		} else if (medicao <= 180) {
+		} else if (medicao <= 140) {
 			return Estado.OK;
 			
 		} else if (medicao <= 279) {

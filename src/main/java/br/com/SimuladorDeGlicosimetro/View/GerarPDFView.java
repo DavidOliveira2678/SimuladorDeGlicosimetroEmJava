@@ -1,126 +1,93 @@
 package br.com.SimuladorDeGlicosimetro.View;
 
-import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
+
 import java.io.IOException;
-import java.net.URL;
+
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import br.com.SimuladorDeGlicosimetro.Utils.Constantes;
-import br.com.SimuladorDeGlicosimetro.Utils.GeradorPDF;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.JButton;
 
-public class GerarPDFView extends JFrame {
+import br.com.SimuladorDeGlicosimetro.Utils.Constantes;
+import br.com.SimuladorDeGlicosimetro.Utils.GeradorPDF;
+
+
+
+public class GerarPDFView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GerarPDFView frame = new GerarPDFView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
-	public GerarPDFView() {
+	public GerarPDFView(MainView mainView) {
 		
-		URL urlImagem = GerarPDFView.class.getClassLoader().getResource("Static/GlucaJavaIcon.png");
-		
-		setTitle("GlucaJava - Gerar PDF");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(urlImagem));		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(Constantes.FECHAR_TELA_CONFIRM);
-		setSize(Constantes.LARGURA, Constantes.ALTURA);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		this.setSize(Constantes.LARGURA, Constantes.ALTURA);
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.setLayout(null);
 
 		
 		JLabel lblTituloMaior = new JLabel("Gerar PDF das");
 		lblTituloMaior.setBounds(240, 26, 453, 101);
 		lblTituloMaior.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 67));
-		contentPane.add(lblTituloMaior);
+		this.add(lblTituloMaior);
 		
 		
 		JLabel lblTituloMenor = new JLabel("medições registradas");
 		lblTituloMenor.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 47));
 		lblTituloMenor.setBounds(281, 95, 475, 80);
-		contentPane.add(lblTituloMenor);
+		this.add(lblTituloMenor);
 		
 		
 		JCheckBox chckbxHipoglicemias = new JCheckBox("Hipoglicemias");
 		chckbxHipoglicemias.setToolTipText("Campo exclusivo de hipoglicemias no PDF");
 		chckbxHipoglicemias.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
 		chckbxHipoglicemias.setBounds(238, 274, 225, 51);
-		contentPane.add(chckbxHipoglicemias);
+		this.add(chckbxHipoglicemias);
 		
 		
 		JCheckBox chckbxHiperglicemias = new JCheckBox("Hiperglicemias");
 		chckbxHiperglicemias.setToolTipText("Campo exclusivo de hiperglicemias no PDF");
 		chckbxHiperglicemias.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 28));
 		chckbxHiperglicemias.setBounds(479, 274, 214, 51);
-		contentPane.add(chckbxHiperglicemias);
+		this.add(chckbxHiperglicemias);
 		
 		
 		JLabel lblCamposEspecficos = new JLabel("Campos específicos");
 		lblCamposEspecficos.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCamposEspecficos.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 32));
 		lblCamposEspecficos.setBounds(218, 210, 475, 80);
-		contentPane.add(lblCamposEspecficos);
+		this.add(lblCamposEspecficos);
 		
 		
 		JButton btnGerar = new JButton("Gerar!");
 		btnGerar.setFont(new Font("Yu Gothic UI Semilight", Font.BOLD, 42));
 		btnGerar.setToolTipText("");
 		btnGerar.setBounds(330, 383, 269, 70);
-		contentPane.add(btnGerar);
+		this.add(btnGerar);
 		
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 18));
 		btnVoltar.setBounds(10, 11, 92, 27);
-		contentPane.add(btnVoltar);
+		this.add(btnVoltar);
 		
 		
 		JLabel lblObs = new JLabel("Obs.: Você está gerando um arquivo PDF com todas as medições que você simulou.");
 		lblObs.setHorizontalAlignment(SwingConstants.CENTER);
 		lblObs.setFont(new Font("Yu Gothic UI Semilight", Font.ITALIC, 18));
 		lblObs.setBounds(131, 481, 680, 80);
-		contentPane.add(lblObs);
+		this.add(lblObs);
 		
 		
 		btnVoltar.addActionListener( e -> {
-			
-			MedicaoView medView = new MedicaoView();
-			this.setVisible(false);
-			medView.setVisible(true);
-			this.dispose();
-			
+			mainView.goTo("medicao");
+			mainView.setTitle("GlucaJava - GlucaJava");	
 		});
 		
 		
@@ -148,7 +115,7 @@ public class GerarPDFView extends JFrame {
 						null);
 				
 				JDialog jDialog = opPane.createDialog(this, "Aguarde");
-				jDialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+				jDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 				jDialog.setModal(false);
 				jDialog.setVisible(true);
 				

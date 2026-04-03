@@ -48,7 +48,6 @@ public class GeradorPDF {
 			float margemSuperior = 50;
 			float margemEsquerda = 50;
 			float margemInferior = 50;
-			float margemDireita = 50;
 			
 			float inicioX = margemEsquerda;
 			float inicioYPrimeiraPagina = containerPagina.getHeight() - margemSuperior - 80;
@@ -184,10 +183,11 @@ public class GeradorPDF {
 		float topo = page.getMediaBox().getHeight();
 		float yCabecalho = topo - 60;
 		
-		try(InputStream inpStream = GeradorPDF.class.getClassLoader().getResourceAsStream("Static/GlucaJavaLogo.png")){
+//		TODO: VERIFICAR O CAMINHO DA IMAGEM NA GERAÇÃO DO .JAR
+		try(InputStream inpStream = GeradorPDF.class.getResourceAsStream("/Static/GlucaJavaLogo.png")){
 			
 			
-		    if (inpStream == null) throw new IOException("Imagem não encontrada: Static/GlucaJavaLogo.png");
+		    if (inpStream == null) throw new IOException("Imagem não encontrada: /Static/GlucaJavaLogo.png");
 
 		    BufferedImage bufferedImage = ImageIO.read(inpStream);
 		    PDImageXObject glucaJavaLogo = LosslessFactory.createFromImage(doc, bufferedImage);

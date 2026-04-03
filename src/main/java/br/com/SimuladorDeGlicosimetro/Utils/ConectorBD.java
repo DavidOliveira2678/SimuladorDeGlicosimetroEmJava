@@ -8,7 +8,7 @@ import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class ConectorBD {
-	private static final Dotenv ENV = Dotenv.load();
+	private static final Dotenv ENV = Dotenv.configure().directory("./").filename(".env").ignoreIfMissing().load();
 	private static final String nomeBD = ENV.get("NOME_BD");
 	private static final String usuarioBD = ENV.get("USUARIO_BD");
 	private static final String senhaBD = ENV.get("SENHA_BD");

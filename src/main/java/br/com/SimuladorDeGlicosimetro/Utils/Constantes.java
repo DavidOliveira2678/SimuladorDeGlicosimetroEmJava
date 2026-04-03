@@ -1,11 +1,8 @@
 package br.com.SimuladorDeGlicosimetro.Utils;
 
-import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.format.DateTimeFormatter;
-
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Constantes {
