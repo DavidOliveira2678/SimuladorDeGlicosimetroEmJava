@@ -4,13 +4,21 @@
 O GlucaJava é simulador de um gicosímetro desenvolvido utilizando Java na JDK 21 e Maven para gerenciamento de dependências. O projeto foi feito com finalidade de estudo, especialmente para o reforço de desenvolvimento utilizando Controllers, Services e Repositories _(ou, como no caso do GlucaJava: Entities)_.
 
 ### Sumário de navegação:
-- [Tecnologias utilizadas no projeto](#gear-tecnologias-utilizadas)
+- [Tecnologias utilizadas no projeto](#gear-ferramentas-e-tecnologias-utilizadas)
 - [Implementação de Listas Circulares](#repeat-implementação-de-listas-circulares)
 - [Banco de dados no GlucaJava](#card_file_box-banco-de-dados)
 - [Clonando o repositório](#rocket-clonar-o-repositório)
 - [Criando um .jar executável](#computer-criando-um-jar-executável)
 
-## :gear: Tecnologias utilizadas:
+## :gear: Ferramentas e tecnologias utilizadas
+
+### :wrench: Ferramentas:
+- **Eclipse IDE** - como ambiente de desenvolvimento;
+- **BrModelo 2.0** - para criação do projeto conceitual do banco de dados;
+- **MySQL** - como sistema de gerenciamento de banco de dados _(SGBD)_;
+- **Aseprite** - para criação dos sprites do GlucaJava.
+
+### :desktop_computer: Tecnologias:
 - **Java Swing** - para criação da interface gráfica;
 - **Apache PDF Box** - para geração de PDFs;
 - **MySql JDBC** - JDBC com o driver do MySql para conexão com banco de dados;
