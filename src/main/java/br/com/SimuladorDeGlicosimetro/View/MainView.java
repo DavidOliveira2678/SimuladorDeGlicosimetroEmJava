@@ -20,7 +20,7 @@ public class MainView extends JFrame{
 		cardLayout = new CardLayout();
 		container = new JPanel(cardLayout);
 		
-//		TODO: VERIFICAR O CAMINHO DA IMAGEM NA GERAÇÃO DO .JAR
+		
 		final URL urlImagem = MainView.class.getResource("/Static/GlucaJavaIcon.png");
 		
 		TitleMenuView title = new TitleMenuView(this);

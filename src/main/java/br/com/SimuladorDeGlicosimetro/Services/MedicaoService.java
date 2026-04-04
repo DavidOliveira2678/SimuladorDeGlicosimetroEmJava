@@ -2,14 +2,11 @@ package br.com.SimuladorDeGlicosimetro.Services;
 
 import br.com.SimuladorDeGlicosimetro.Entities.Medicao;
 
-import java.util.List;
-
 import br.com.SimuladorDeGlicosimetro.Data.MedicaoDAO;
 import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import br.com.SimuladorDeGlicosimetro.Exceptions.ServiceException;
 import br.com.SimuladorDeGlicosimetro.Utils.Estado;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
-import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 
 public class MedicaoService {
 	

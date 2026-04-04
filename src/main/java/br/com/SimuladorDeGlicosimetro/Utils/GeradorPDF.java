@@ -183,8 +183,8 @@ public class GeradorPDF {
 		float topo = page.getMediaBox().getHeight();
 		float yCabecalho = topo - 60;
 		
-//		TODO: VERIFICAR O CAMINHO DA IMAGEM NA GERAÇÃO DO .JAR
-		try(InputStream inpStream = GeradorPDF.class.getResourceAsStream("/Static/GlucaJavaLogo.png")){
+		
+		try(InputStream inpStream =  GeradorPDF.class.getResourceAsStream("/Static/GlucaJavaLogo.png")){
 			
 			
 		    if (inpStream == null) throw new IOException("Imagem não encontrada: /Static/GlucaJavaLogo.png");

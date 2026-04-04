@@ -2,12 +2,9 @@ package br.com.SimuladorDeGlicosimetro.Controllers;
 
 import br.com.SimuladorDeGlicosimetro.Services.MedicaoService;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
-import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 import br.com.SimuladorDeGlicosimetro.Exceptions.ControllerException;
-import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import br.com.SimuladorDeGlicosimetro.Exceptions.ServiceException;
 import br.com.SimuladorDeGlicosimetro.Entities.Medicao;
-import java.util.List;
 
 public class MedicaoController {
 	private MedicaoService medService;
@@ -17,7 +14,8 @@ public class MedicaoController {
 	}
 	
 	/**
-	 * Simula uma medição de glicemia e a registra no banco de dados.
+	 * Simula uma medição de glicemia, registra-a no banco de dados e a retorna.
+	 * 
 	 * @return uma medição ({@code Medicao}) para ser manipulada.
 	 * @throws ControllerException caso haja algum erro no ato de simulação de medição de glicemia
 	 */
@@ -35,9 +33,9 @@ public class MedicaoController {
 	}
 	
 	/**
-	 * Busca por <B>todas</B> as medições no banco de dados e as retorna em formato de lista circular duplamente encadeada ({@code CircularLinkedList<Medicao>})
+	 * Retorna <B>todas</B> as medições no banco de dados em formato de {@code CircularLinkedList<Medicao>}.
 	 * 
-	 * @return Uma lista circular duplamente encadeada({@code CircularLinkedList<Medicao>}) das medições presentes no banco de dados.
+	 * @return Uma lista circular duplamente encadeada ({@code CircularLinkedList<Medicao>}) das medições presentes no banco de dados.
 	 * @throws ControllerException caso haja algum erro no momento de busca das medições.
 	 */
 	public CircularLinkedList<Medicao> buscarMedicoes() throws ControllerException {
@@ -56,6 +54,12 @@ public class MedicaoController {
 		
 	}
 	
+	/**
+	 * Retorna as hipoglicemias registradas no banco de dados em formato de {@code CircularLinkedList<Medicao>}.
+	 * 
+	 * @return Uma lista circular duplamente encadeada ({@code CircularLinkedList<Medicao>}) das hipoglicemias presentes no banco de dados.
+	 * @throws ControllerException caso haja algum erro no momento de busca das medições.
+	 */
 	public CircularLinkedList<Medicao> buscarHipoglicemias() throws ControllerException {
 		
 		try {
@@ -73,6 +77,12 @@ public class MedicaoController {
 		
 	}
 	
+	/**
+	 * Retorna as hiperglicemias registradas no banco de dados em formato de {@code CircularLinkedList<Medicao>}.
+	 * 
+	 * @return Uma lista circular duplamente encadeada ({@code CircularLinkedList<Medicao>}) das hiperglicemias presentes no banco de dados.
+	 * @throws ControllerException caso haja algum erro no momento de busca das medições.
+	 */
 	public CircularLinkedList<Medicao> buscarHiperglicemias() throws ControllerException {
 		
 		try {
@@ -91,8 +101,8 @@ public class MedicaoController {
 	
 	
 	/**
-	 * Apaga todas os registros de medições do banco de dados.
-	 * @return <I>void</I>
+	 * Apaga todas as medições do banco de dados.
+	 * 
 	 * @throws ControllerException se haver algum problema no momento de deletar os registros das medições.
 	 */
 	public void apagarMedicoes() throws ControllerException {

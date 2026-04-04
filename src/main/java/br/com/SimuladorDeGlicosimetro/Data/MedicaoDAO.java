@@ -5,13 +5,10 @@ import br.com.SimuladorDeGlicosimetro.Exceptions.DatabaseException;
 import br.com.SimuladorDeGlicosimetro.Utils.ConectorBD;
 import br.com.SimuladorDeGlicosimetro.Utils.Estado;
 import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularLinkedList;
-import br.com.SimuladorDeGlicosimetro.Utils.ListaCircular.CircularList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MedicaoDAO {
 	
