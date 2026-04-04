@@ -8,6 +8,7 @@ O GlucaJava é simulador de um gicosímetro desenvolvido utilizando Java na JDK 
 - [Implementação de Listas Circulares](#repeat-implementação-de-listas-circulares)
 - [Banco de dados no GlucaJava](#card_file_box-banco-de-dados)
 - [Clonando o repositório](#rocket-clonar-o-repositório)
+- [Criando um .jar executável](#computer-criando-um-jar-executável)
 
 ## :gear: Tecnologias utilizadas:
 - **Java Swing** - para criação da interface gráfica;
@@ -62,5 +63,28 @@ LOCALHOST_BD=[PORTA_DO_HOST_DO_SEU_MYSQL]
 
 :warning: Lembrando que caso o `.env` não esteja na pasta raiz do projeto, o dotenv não conseguirá inicializar as variáveis e não será possível rodar o projeto.
 
+## :computer: Criando um .jar executável
+
+Para criar um arquivo executável do GlucaJava _(um arquivo .jar)_, eu recomendo que você utilize comandos java e maven no prompt de comando - e é esse método que será seguido nessa seção. No entanto, também é possível criar através do seu IDE.
+
+### Como criar?
+1 - Abra o prompt de comando do seu dispositivo na pasta raiz do projeto. Se não conseguir abrir direto, navegue até o diretório.
+
+2 - Cole o seginte comando Maven dentro prompt de comando para criar o arquivo .jar com as dependências embutidas dentro de uma pasta _(/target)_:
+```bash
+mvn clean package assembly:single  
+```
+3 - Ao finalizar a geração da pasta, o executável estará disponível na pasta target da pasta raiz do GlucaJava - mas ainda não dá pra executar com funcionamento total.
+
+4 - Copie e cole o arquivo `.env` dentro da pasta target para que o executável consiga ler as variáveis de ambiente.
+
 </br>
-Espero que você goste do GlucaJava! :purple_heart:
+Ao realizar essas etapas o GlucaJava estará pronto para ser executado fora do ambiente de desenvolvimento (IDE), mas lembre-se de abrir o arquivo que é finalizado com "jar-with-dependencies". No entanto, se você ainda quiser ler as mensagens do sistema, você pode iniciar o .jar utilizando o seguinte comando (ainda na pasta raiz do GlucaJava):
+
+```bash
+java -jar target\SimuladorDeGlicosimetroEmJava-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+```
+
+<hr>
+
+Muito obrigado por ler! Eu espero que você goste do GlucaJava. :purple_heart:
